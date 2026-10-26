@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌱 Siwi Jaya - Sistem Akuntansi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🌱</span>
+        <div><h1>Siwi Jaya</h1><small>Toko Pertanian</small></div>
+      </div>
+      <nav>
+        <a href="#dashboard" data-nav="dashboard" class="nav-item active">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="#produk" data-nav="produk" class="nav-item">
+          <span class="nav-icon">📦</span> Produk
+        </a>
+        <a href="#supplier" data-nav="supplier" class="nav-item">
+          <span class="nav-icon">🏭</span> Supplier
+        </a>
+        <a href="#transaksi" data-nav="transaksi" class="nav-item">
+          <span class="nav-icon">💳</span> Transaksi
+        </a>
+        <a href="#jurnal" data-nav="jurnal" class="nav-item">
+          <span class="nav-icon">📔</span> Jurnal
+        </a>
+      </nav>
+      <div class="sidebar-footer"><small>© 2025 Siwi Jaya</small></div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="page-title">Dashboard</h2>
+          <p class="muted" id="today-label"></p>
+        </div>
+        <div class="topbar-actions"><div class="avatar">👨‍🌾</div></div>
+      </header>
+
+      <!-- ============ DASHBOARD ============ -->
+      <section data-section="dashboard" class="page-section">
+        <div class="stats-grid">
+          <div class="stat-card stat-primary">
+            <div class="stat-icon">💰</div>
+            <div><span class="stat-label">Saldo Kas</span><h3 id="stat-saldo">Rp 0</h3></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div><span class="stat-label">Total Produk</span><h3 id="stat-produk">0</h3></div>
+          </div>
+          <div class="stat-card stat-warn">
+            <div class="stat-icon">⚠️</div>
+            <div><span class="stat-label">Stok Menipis</span><h3 id="stat-menipis">0</h3></div>
+          </div>
+          <div class="stat-card stat-success">
+            <div class="stat-icon">📈</div>
+            <div><span class="stat-label">Transaksi Hari Ini</span><h3 id="stat-hari-ini">Rp 0</h3></div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>⚠️ Peringatan Stok</h3>
+              <span class="badge badge-danger">Low Stock</span>
+            </div>
+            <div id="warning-list" class="list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>🧾 Transaksi Terbaru</h3></div>
+            <div id="recent-trx" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PRODUK ============ -->
+      <section data-section="produk" class="page-section" hidden>
+        <div class="card">
+          <div class="card-header"><h3>➕ Tambah / Edit Produk</h3></div>
+          <form id="form-produk" class="form-grid">
+            <input type="hidden" id="produk-id">
+            <div class="form-group"><label>Nama</label><input type="text" id="produk-nama" required></div>
+            <div class="form-group">
+              <label>Kategori</label>
+              <select id="produk-kategori">
+                <option>Pupuk</option><option>Benih</option><option>Pestisida</option>
+                <option>Pakan</option><option>Alat</option><option>Umum</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Satuan</label><input type="text" id="produk-satuan" value="pcs" required></div>
+            <div class="form-group"><label>Harga Beli</label><input type="number" id="produk-beli" value="0" required></div>
+            <div class="form-group"><label>Harga Jual</label><input type="number" id="produk-jual" value="0" required></div>
+            <div class="form-group"><label>Stok</label><input type="number" id="produk-stok" value="0" required></div>
+            <div class="form-group"><label>Stok Min</label><input type="number" id="produk-min" value="5" required></div>
+            <div class="form-group"><label>Supplier</label><select id="produk-supplier"></select></div>
+            <div class="form-group form-action"><button type="submit" class="btn btn-primary">💾 Simpan</button></div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📋 Daftar Produk</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Nama</th><th>Kategori</th><th>Satuan</th><th>H. Beli</th>
+                    <th>H. Jual</th><th>Stok</th><th>Supplier</th><th>Aksi</th></tr>
+              </thead>
+              <tbody id="tbody-produk">
+                <tr><td colspan="8" class="empty-state">Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SUPPLIER ============ -->
+      <section data-section="supplier" class="page-section" hidden>
+        <div class="card">
+          <div class="card-header"><h3>➕ Tambah / Edit Supplier</h3></div>
+          <form id="form-supplier" class="form-grid">
+            <input type="hidden" id="supplier-id">
+            <div class="form-group"><label>Nama</label><input type="text" id="supplier-nama" required></div>
+            <div class="form-group"><label>Kontak</label><input type="text" id="supplier-kontak"></div>
+            <div class="form-group" style="grid-column: span 2;"><label>Alamat</label><input type="text" id="supplier-alamat"></div>
+            <div class="form-group form-action"><button type="submit" class="btn btn-primary">💾 Simpan</button></div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📋 Daftar Supplier</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Nama</th><th>Kontak</th><th>Alamat</th><th>Dibuat</th><th>Aksi</th></tr></thead>
+              <tbody id="tbody-supplier"><tr><td colspan="5" class="empty-state">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TRANSAKSI ============ -->
+      <section data-section="transaksi" class="page-section" hidden>
+        <div class="card">
+          <div class="card-header"><h3>🛒 Transaksi Baru</h3></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tipe</label>
+              <select id="trx-tipe">
+                <option value="penjualan">Penjualan</option>
+                <option value="pembelian">Pembelian</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Produk</label><select id="trx-produk"></select></div>
+            <div class="form-group"><label>Qty</label><input type="number" id="trx-qty" value="1" min="1"></div>
+            <div class="form-group form-action">
+              <button class="btn btn-secondary" id="btn-tambah-cart" type="button">➕ Tambah</button>
+            </div>
+            <div class="form-group"><label>Supplier</label><select id="trx-supplier"></select></div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Keterangan</label><input type="text" id="trx-ket" placeholder="opsional">
+            </div>
+          </div>
+
+          <div class="table-wrap" style="margin-top:1rem;">
+            <table>
+              <thead><tr><th>Produk</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr></thead>
+              <tbody id="tbody-cart"><tr><td colspan="4" class="empty-state">Keranjang kosong</td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="cart-footer">
+            <h3>Total: <span id="trx-total">Rp 0</span></h3>
+            <button class="btn btn-primary" id="btn-simpan-trx">💾 Simpan Transaksi</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📜 Riwayat Transaksi</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Tanggal</th><th>Tipe</th><th>Keterangan</th>
+                    <th>Supplier</th><th>Item</th><th>Total</th></tr>
+              </thead>
+              <tbody id="tbody-transaksi"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ JURNAL ============ -->
+      <section data-section="jurnal" class="page-section" hidden>
+        <div class="stats-grid">
+          <div class="stat-card stat-primary" style="grid-column: 1 / -1;">
+            <div class="stat-icon">💰</div>
+            <div><span class="stat-label">Saldo Kas Terkini</span><h3 id="jurnal-saldo">Rp 0</h3></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>➕ Tambah Mutasi Manual</h3></div>
+          <form id="form-jurnal" class="form-grid">
+            <div class="form-group"><label>Keterangan</label><input type="text" id="jurnal-ket" required></div>
+            <div class="form-group">
+              <label>Tipe</label>
+              <select id="jurnal-tipe">
+                <option value="masuk">Masuk</option>
+                <option value="keluar">Keluar</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Jumlah</label><input type="number" id="jurnal-jumlah" required min="1"></div>
+            <div class="form-group form-action"><button type="submit" class="btn btn-primary">💾 Simpan</button></div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📜 Mutasi Jurnal</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Tipe</th><th>Jumlah</th><th>Saldo</th></tr></thead>
+              <tbody id="tbody-jurnal"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
